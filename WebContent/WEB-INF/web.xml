@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <servlet>
+    <servlet-name>SignUpComplete</servlet-name>
+    <servlet-class>com.sit.marketplace.broker.accounts.SignUpComplete</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignUpComplete</servlet-name>
+    <url-pattern>/SignUpComplete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>checkLogin</servlet-name>
+    <servlet-class>com.sit.marketplace.broker.accounts.CheckLogin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>checkLogin</servlet-name>
+    <url-pattern>/checkLogin</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>logout</servlet-name>
+    <servlet-class>com.sit.marketplace.broker.accounts.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
