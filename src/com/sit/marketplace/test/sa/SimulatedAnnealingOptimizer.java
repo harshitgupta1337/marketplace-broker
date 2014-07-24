@@ -28,10 +28,10 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 			iterate();
 		}
 		
-		return pickSolutionFromOmega();
+		return pickFinalSolutionFromOmega();
 	}
 	
-	private Solution pickSolutionFromOmega(){
+	private Solution pickFinalSolutionFromOmega(){
 		return omega.get(0);
 	}
 	
@@ -39,6 +39,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	}
 	
 	private Solution perturbSolution(Solution solution){
+		
 		return solution;
 		
 	}
@@ -49,7 +50,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	
 	public void iterate(){
 		for(int i=0;i< NO_OF_ITERATIONS;i++){
-			Solution uniSelected = omega.get((int)(Math.random()*omega.size()));
+			Solution uniSelected = uniselect();
 			Solution x_ = perturbSolution(uniSelected);
 			List<Solution> omega_ = getPerturbedNonDomSet(x_);
 			if(Math.random()<probability(deltaEnergy(omega_, x_))){
@@ -86,12 +87,58 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
+	private Solution uniselect(){
+		Solution uniselectedSolution = omega.get(0);
+		double random = Math.random();
+		if(random < 0.33){
+			double mincost = omega.get(0).getAvgCost(), maxcost = omega.get(0).getAvgCost();
+			for(Solution soln : omega){
+				if(soln.getAvgCost() > maxcost)
+					maxcost = soln.getAvgCost();
+				if(soln.getAvgCost() < mincost)
+					mincost = soln.getAvgCost();
+			}
+			
+			double randomcost = Math.random()*(maxcost - mincost) + mincost;
+			
+			for(Solution soln : omega){
+				if(Math.abs(soln.getAvgCost() - randomcost) < Math.abs(uniselectedSolution.getAvgCost() - randomcost))
+					uniselectedSolution = soln;
+			}
+			
+		}else if(random <0.66){
+			double minAvailability = omega.get(0).getAvgMinAvailability(), maxAvailability = omega.get(0).getAvgMinAvailability();
+			for(Solution soln : omega){
+				if(soln.getAvgMinAvailability() > maxAvailability)
+					maxAvailability = soln.getAvgMinAvailability();
+				if(soln.getAvgMinAvailability() < minAvailability)
+					minAvailability = soln.getAvgMinAvailability();
+			}
+			
+			double randomAvailability = Math.random()*(maxAvailability - minAvailability) + minAvailability;
+						
+			for(Solution soln : omega){
+				if(Math.abs(soln.getAvgMinAvailability() - randomAvailability) < Math.abs(uniselectedSolution.getAvgMinAvailability() - randomAvailability))
+					uniselectedSolution = soln;
+			}
+		}else{
+			double mincost = omega.get(0).getAvgCost(), maxcost = omega.get(0).getAvgCost();
+			for(Solution soln : omega){
+				if(soln.getAvgCost() > maxcost)
+					maxcost = soln.getAvgCost();
+				if(soln.getAvgCost() < mincost)
+					mincost = soln.getAvgCost();
+			}
+			
+			double randomcost = Math.random()*(maxcost - mincost) + mincost;
+						
+			for(Solution soln : omega){
+				if(Math.abs(soln.getAvgCost() - randomcost) < Math.abs(uniselectedSolution.getAvgCost() - randomcost))
+					uniselectedSolution = soln;
+			}
+		}
+		return uniselectedSolution;
+	}
 	
 	/**
 	 * @return the omega (list of mutually non-dominating solutions)
