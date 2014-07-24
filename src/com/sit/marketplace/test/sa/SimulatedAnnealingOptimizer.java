@@ -1,7 +1,9 @@
 package com.sit.marketplace.test.sa;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sit.marketplace.test.types.Provider;
 import com.sit.marketplace.test.types.Solution;
@@ -20,6 +22,10 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	public Solution findOptimalSolution(List<Provider> providers, int noOfVms) {
 		this.providers = providers;
 		this.noOfVms = noOfVms;
+		providerIdToProviderMap = new HashMap<String, Provider>();
+		for(Provider provider : providers){
+			providerIdToProviderMap.put(provider.getProviderId(), provider);
+		}
 		omega = new ArrayList<Solution>();
 		temperature = INITIAL_TEMPERATURE;
 		fillRandomSolution();
@@ -36,11 +42,75 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	}
 	
 	private void fillRandomSolution(){
+		Map<String, Integer> allocationMap = new HashMap<String, Integer>();
+		int noOfVmsLeft = noOfVms;
+		for(Provider provider : providers){
+			if(noOfVmsLeft == 0){
+				allocationMap.put(provider.getProviderId(), 0);
+				continue;
+			}
+			
+			if(provider.getNoOfAvailableVms() <= noOfVmsLeft){
+				allocationMap.put(provider.getProviderId(), provider.getNoOfAvailableVms());
+				noOfVmsLeft -= provider.getNoOfAvailableVms();
+			}
+			else{
+				allocationMap.put(provider.getProviderId(), noOfVmsLeft);
+				noOfVmsLeft = 0;
+			}
+		}
+		
+		omega.add(new Solution(allocationMap, calculateAvgMinAvailability(allocationMap), calculateAvgCost(allocationMap), calculateAvgTrust(allocationMap)));
+		
+	}
+	
+	private double calculateAvgMinAvailability(Map<String, Integer> allocationMap){
+		double numerator = 0.0;
+		double denominator = 0.0;
+		for(String providerId : allocationMap.keySet()){
+			numerator += providerIdToProviderMap.get(providerId).getMinAvailability() * allocationMap.get(providerId);
+			denominator += allocationMap.get(providerId);
+		}
+		return (numerator/denominator);
+	}
+	private double calculateAvgCost(Map<String, Integer> allocationMap){
+		double numerator = 0.0;
+		double denominator = 0.0;
+		for(String providerId : allocationMap.keySet()){
+			numerator += providerIdToProviderMap.get(providerId).getCostPerHour() * allocationMap.get(providerId);
+			denominator += allocationMap.get(providerId);
+		}
+		return (numerator/denominator);
+	}
+	private double calculateAvgTrust(Map<String, Integer> allocationMap){
+		double numerator = 0.0;
+		double denominator = 0.0;
+		for(String providerId : allocationMap.keySet()){
+			numerator += providerIdToProviderMap.get(providerId).getTrust() * allocationMap.get(providerId);
+			denominator += allocationMap.get(providerId);
+		}
+		return (numerator/denominator);
 	}
 	
 	private Solution perturbSolution(Solution solution){
+		Provider loser = providers.get((int) (Math.random()*providers.size()));
+		Provider gainer = null;
+		while(true){
+			int randomIndex = (int) (Math.random()*providers.size());
+			Provider currentProvider = providers.get(randomIndex);
+			if(currentProvider.getProviderId() == loser.getProviderId())
+				continue;
+			if(currentProvider.getNoOfAvailableVms() == solution.getVmAllocationMap().get(currentProvider.getProviderId()))
+				continue;
+			
+			gainer = currentProvider;
+			break;
+		}
+		Map<String, Integer> allocationMap = new HashMap<String, Integer>(solution.getVmAllocationMap());
+		allocationMap.put(loser.getProviderId(), allocationMap.get(loser.getProviderId())-1);
+		allocationMap.put(gainer.getProviderId(), allocationMap.get(gainer.getProviderId())+1);
 		
-		return solution;
+		return new Solution(allocationMap, calculateAvgMinAvailability(allocationMap), calculateAvgCost(allocationMap), calculateAvgTrust(allocationMap));
 		
 	}
 

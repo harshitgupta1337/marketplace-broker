@@ -8,11 +8,11 @@ public class Solution {
 
 	private Map<String, Integer> vmAllocationMap;
 
-	private float avgMinAvailability;
-	private float avgCost;
-	private float avgTrust;
+	private double avgMinAvailability;
+	private double avgCost;
+	private double avgTrust;
 
-	public Solution(Map<String, Integer> vmAllocationMap, float avgMinAvailability, float avgCost, float avgTrust){
+	public Solution(Map<String, Integer> vmAllocationMap, double avgMinAvailability, double avgCost, double avgTrust){
 		this.vmAllocationMap = vmAllocationMap;
 		this.avgCost = avgCost;
 		this.avgMinAvailability = avgMinAvailability;
@@ -35,32 +35,32 @@ public class Solution {
 	}
 
 
-	public float getAvgMinAvailability() {
+	public double getAvgMinAvailability() {
 		return avgMinAvailability;
 	}
 
 
-	public void setAvgMinAvailability(float avgMinAvailability) {
+	public void setAvgMinAvailability(double avgMinAvailability) {
 		this.avgMinAvailability = avgMinAvailability;
 	}
 
 
-	public float getAvgCost() {
+	public double getAvgCost() {
 		return avgCost;
 	}
 
 
-	public void setAvgCost(float avgCost) {
+	public void setAvgCost(double avgCost) {
 		this.avgCost = avgCost;
 	}
 
 
-	public float getAvgTrust() {
+	public double getAvgTrust() {
 		return avgTrust;
 	}
 
 
-	public void setAvgTrust(float avgTrust) {
+	public void setAvgTrust(double avgTrust) {
 		this.avgTrust = avgTrust;
 	}
 	
