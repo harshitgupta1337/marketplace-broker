@@ -6,6 +6,16 @@ public class Provider {
 	private float minAvailability;
 	private float trust;
 	private float costPerHour;
+	private int noOfAvailableVms;
+	
+	public Provider(String providerId, float minAvailability, float trust, float costPerHour, int noOfAvailableVms){
+		this.providerId = providerId;
+		this.minAvailability = minAvailability;
+		this.trust = trust;
+		this.costPerHour = costPerHour;
+		this.noOfAvailableVms = noOfAvailableVms;
+	}
+	
 	/**
 	 * @return the minAvailability
 	 */
@@ -59,5 +69,17 @@ public class Provider {
 	 */
 	public void setProviderId(String providerId) {
 		this.providerId = providerId;
+	}
+	/**
+	 * @return the noOfAvailableVms
+	 */
+	public int getNoOfAvailableVms() {
+		return noOfAvailableVms;
+	}
+	/**
+	 * @param noOfAvailableVms the noOfAvailableVms to set
+	 */
+	public void setNoOfAvailableVms(int noOfAvailableVms) {
+		this.noOfAvailableVms = noOfAvailableVms;
 	}
 }
