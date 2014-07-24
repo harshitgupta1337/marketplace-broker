@@ -1,14 +1,15 @@
 package com.sit.marketplace.test.types;
 
+
 public class Provider {
 	
 	private String providerId;
-	private float minAvailability;
-	private float trust;
-	private float costPerHour;
+	private double minAvailability;
+	private double trust;
+	private double costPerHour;
 	private int noOfAvailableVms;
 	
-	public Provider(String providerId, float minAvailability, float trust, float costPerHour, int noOfAvailableVms){
+	public Provider(String providerId, double minAvailability, double trust, double costPerHour, int noOfAvailableVms){
 		this.providerId = providerId;
 		this.minAvailability = minAvailability;
 		this.trust = trust;
@@ -19,45 +20,40 @@ public class Provider {
 	/**
 	 * @return the minAvailability
 	 */
-	public float getMinAvailability() {
+	public double getMinAvailability() {
 		return minAvailability;
 	}
 	/**
 	 * @param minAvailability the minAvailability to set
 	 */
-	public void setMinAvailability(float minAvailability) {
+	public void setMinAvailability(double minAvailability) {
 		this.minAvailability = minAvailability;
 	}
 	/**
 	 * @return the trust
 	 */
-	public float getTrust() {
+	public double getTrust() {
 		return trust;
 	}
 	/**
 	 * @param trust the trust to set
 	 */
-	public void setTrust(float trust) {
+	public void setTrust(double trust) {
 		this.trust = trust;
 	}
 	/**
 	 * @return the costPerHour
 	 */
-	public float getCostPerHour() {
+	public double getCostPerHour() {
 		return costPerHour;
 	}
 	/**
 	 * @param costPerHour the costPerHour to set
 	 */
-	public void setCostPerHour(float costPerHour) {
+	public void setCostPerHour(double costPerHour) {
 		this.costPerHour = costPerHour;
 	}
 	
-	public Provider(float minAvailability, float trust, float costPerHour){
-		this.minAvailability = minAvailability;
-		this.trust = trust;
-		this.costPerHour = costPerHour;
-	}
 	/**
 	 * @return the providerId
 	 */

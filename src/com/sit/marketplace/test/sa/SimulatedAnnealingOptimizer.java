@@ -10,10 +10,9 @@ import com.sit.marketplace.test.types.Solution;
 
 public class SimulatedAnnealingOptimizer extends Optimizer {
 
-	private static double MIN_TEMPERATURE = 0.01;
+	private static double MIN_TEMPERATURE = 0.0001;
 	private static int NO_OF_ITERATIONS = 1000;
 	private static double INITIAL_TEMPERATURE= 1000;
-	private static double PERTURBATION_PROBABILITY= 0.3;
 	
 	private List<Solution> omega;
 	private double temperature;
@@ -31,10 +30,19 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		fillRandomSolution();
 		
 		while(temperature > MIN_TEMPERATURE){
+			//System.out.println(omega.size());
+			printOmega();
 			iterate();
 		}
 		
 		return pickFinalSolutionFromOmega();
+	}
+	
+	private void printOmega(){
+		for(Solution solution : omega){
+			System.out.print("[Cost : " + solution.getAvgCost() + ", MinAvail : " + solution.getAvgMinAvailability() + ", Trust : " + solution.getAvgTrust() + "], ");
+		}
+		System.out.println();
 	}
 	
 	private Solution pickFinalSolutionFromOmega(){
@@ -45,6 +53,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		Map<String, Integer> allocationMap = new HashMap<String, Integer>();
 		int noOfVmsLeft = noOfVms;
 		for(Provider provider : providers){
+			System.out.println("Provider Id" + provider.getProviderId());
 			if(noOfVmsLeft == 0){
 				allocationMap.put(provider.getProviderId(), 0);
 				continue;
@@ -52,6 +61,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 			
 			if(provider.getNoOfAvailableVms() <= noOfVmsLeft){
 				allocationMap.put(provider.getProviderId(), provider.getNoOfAvailableVms());
+				System.out.println(provider.getNoOfAvailableVms() + " VMs allocated");
 				noOfVmsLeft -= provider.getNoOfAvailableVms();
 			}
 			else{
@@ -68,8 +78,11 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		double numerator = 0.0;
 		double denominator = 0.0;
 		for(String providerId : allocationMap.keySet()){
+			
 			numerator += providerIdToProviderMap.get(providerId).getMinAvailability() * allocationMap.get(providerId);
 			denominator += allocationMap.get(providerId);
+			
+			
 		}
 		return (numerator/denominator);
 	}
@@ -92,10 +105,35 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		return (numerator/denominator);
 	}
 	
+	private void printDiffOfAllocationMaps(Map<String, Integer> initialMap, Map<String, Integer> finalMap){
+		System.out.println("===========");
+		for(String providerId : initialMap.keySet()){
+			System.out.println(providerId + " : " + initialMap.get(providerId) + " ----> " + finalMap.get(providerId));
+		}
+		System.out.println("===========");
+	}
+	
 	private Solution perturbSolution(Solution solution){
-		Provider loser = providers.get((int) (Math.random()*providers.size()));
-		Provider gainer = null;
+		Provider loser = null;
 		while(true){
+			loser = providers.get((int) (Math.random()*providers.size()));
+			if(solution.getVmAllocationMap().get(loser.getProviderId()) > 0)
+				break;
+		}
+		
+		Provider gainer = null;
+		int i=0;
+		while(true){
+			if(i == providers.size()){
+				gainer = getGainerByBruteForce(loser, solution);
+				if(gainer == null){
+					gainer = loser;
+					break;
+				}else{
+					break;
+				}
+			}
+			i++;
 			int randomIndex = (int) (Math.random()*providers.size());
 			Provider currentProvider = providers.get(randomIndex);
 			if(currentProvider.getProviderId() == loser.getProviderId())
@@ -109,11 +147,21 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		Map<String, Integer> allocationMap = new HashMap<String, Integer>(solution.getVmAllocationMap());
 		allocationMap.put(loser.getProviderId(), allocationMap.get(loser.getProviderId())-1);
 		allocationMap.put(gainer.getProviderId(), allocationMap.get(gainer.getProviderId())+1);
-		
+		//printDiffOfAllocationMaps(solution.getVmAllocationMap(), allocationMap);
 		return new Solution(allocationMap, calculateAvgMinAvailability(allocationMap), calculateAvgCost(allocationMap), calculateAvgTrust(allocationMap));
 		
 	}
 
+	private Provider getGainerByBruteForce(Provider loser, Solution solution){
+		for(Provider provider : providers){
+			if(provider.getProviderId() == loser.getProviderId())
+				continue;
+			if(provider.getNoOfAvailableVms() == solution.getVmAllocationMap().get(provider.getProviderId()))
+				continue;
+			return provider;
+		}
+		return null;
+	}
 	public float probability(float deltaEnergy){
 		return (float) Math.min(1, Math.exp(-1*deltaEnergy/temperature));
 	}
@@ -153,11 +201,10 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	}
 	
 	private void updateTemperature(){
-		temperature = (float) (temperature * 0.90);
+		temperature = (float) (temperature * 0.999);
 	}
 	
-	
-	private Solution uniselect(){
+	private Solution uniselect(){		
 		Solution uniselectedSolution = omega.get(0);
 		double random = Math.random();
 		if(random < 0.33){
