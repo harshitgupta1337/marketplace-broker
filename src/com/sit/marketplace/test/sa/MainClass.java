@@ -8,12 +8,12 @@ import com.sit.marketplace.test.types.Solution;
 
 public class MainClass {
 	public static void main(String args[]){
-		Provider provider1 = new Provider("provider1", 99, 100, 0.2, 100);
-		Provider provider2 = new Provider("provider2", 59, 20, 12, 100);
-		Provider provider3 = new Provider("provider3", 59, 20, 12, 100);
-		Provider provider4 = new Provider("provider4", 59, 20, 12, 100);
-		Provider provider5 = new Provider("provider5", 59, 20, 12, 100);
-		Provider provider6 = new Provider("provider6", 59, 20, 12, 100);
+		Provider provider1 = new Provider("provider1", Math.random()*100, Math.random()*100, Math.random()*100, 100);
+		Provider provider2 = new Provider("provider2", Math.random()*100, Math.random()*100, Math.random()*100, 100);
+		Provider provider3 = new Provider("provider3", Math.random()*100, Math.random()*100, Math.random()*100, 100);
+		Provider provider4 = new Provider("provider4", Math.random()*100, Math.random()*100, Math.random()*100, 100);
+		Provider provider5 = new Provider("provider5", Math.random()*100, Math.random()*100, Math.random()*100, 100);
+		Provider provider6 = new Provider("provider6", Math.random()*100, Math.random()*100, Math.random()*100, 100);
 		
 		List<Provider> providers = new ArrayList<Provider>();
 		providers.add(provider2);

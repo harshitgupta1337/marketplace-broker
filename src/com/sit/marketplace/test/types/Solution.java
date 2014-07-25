@@ -77,4 +77,12 @@ public class Solution {
 		}
 		return false;
 	}
+	
+	public boolean equals(Solution solution){
+		for(String providerId : solution.getVmAllocationMap().keySet()){
+			if(this.getVmAllocationMap().get(providerId).intValue() != solution.getVmAllocationMap().get(providerId).intValue())
+				return false;
+		}
+		return true;
+	}
 }

@@ -43,6 +43,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 			System.out.print("[Cost : " + solution.getAvgCost() + ", MinAvail : " + solution.getAvgMinAvailability() + ", Trust : " + solution.getAvgTrust() + "], ");
 		}
 		System.out.println();
+		System.out.println();
 	}
 	
 	private Solution pickFinalSolutionFromOmega(){
@@ -147,6 +148,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		Map<String, Integer> allocationMap = new HashMap<String, Integer>(solution.getVmAllocationMap());
 		allocationMap.put(loser.getProviderId(), allocationMap.get(loser.getProviderId())-1);
 		allocationMap.put(gainer.getProviderId(), allocationMap.get(gainer.getProviderId())+1);
+		
 		//printDiffOfAllocationMaps(solution.getVmAllocationMap(), allocationMap);
 		return new Solution(allocationMap, calculateAvgMinAvailability(allocationMap), calculateAvgCost(allocationMap), calculateAvgTrust(allocationMap));
 		
@@ -170,6 +172,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		for(int i=0;i< NO_OF_ITERATIONS;i++){
 			Solution uniSelected = uniselect();
 			Solution x_ = perturbSolution(uniSelected);
+			
 			List<Solution> omega_ = getPerturbedNonDomSet(x_);
 			if(Math.random()<probability(deltaEnergy(omega_, x_))){
 				omega = omega_;
@@ -192,8 +195,11 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	public List<Solution> getPerturbedNonDomSet(Solution perturbed){
 		List<Solution> omega_ = new ArrayList<Solution>();
 		omega_.add(perturbed);
+
 		for(int i=0;i<omega.size();i++){
 			if((!omega.get(i).dominates(perturbed))&&(!perturbed.dominates(omega.get(i)))){
+				//if(omega.get(i).equals(perturbed))
+					//System.out.println("EQUAL SOLUTIONS FOUND !!!!!");
 				omega_.add(omega.get(i));
 			}
 		}
