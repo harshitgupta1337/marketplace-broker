@@ -24,6 +24,25 @@
     <servlet-name>logout</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>TestDescribeInstances</servlet-name>
+    <servlet-class>Test.TestProviderDescribeInstancesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TestDescribeInstances</servlet-name>
+    <url-pattern>/testDescribeInstances</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>RegisterEucalyptusProvider</servlet-name>
+    <servlet-class>com.sit.marketplace.broker.master.RegisterProviderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterEucalyptusProvider</servlet-name>
+    <url-pattern>/registerEucalyptusProvider</url-pattern>
+  </servlet-mapping>
+  <listener>
+    <listener-class>com.sit.marketplace.broker.utils.AppContextListener</listener-class>
+  </listener>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>

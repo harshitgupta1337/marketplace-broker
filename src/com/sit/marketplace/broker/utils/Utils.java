@@ -6,5 +6,7 @@ public class Utils {
 	public static String MONGODB_HOST = "10.14.254.1";
 	public static String MONGODB_DB = "cloudMarketplaceBroker";
 	public static String MONGODB_USERS_COLLECTION = "users";
+	public static String MONGODB_PROVIDERS_COLLECTION = "providers";
+	public static enum CloudType {EUCALYPTUS, OPENSTACK};
 
 }
