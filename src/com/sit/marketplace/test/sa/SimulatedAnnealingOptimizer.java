@@ -11,7 +11,7 @@ import com.sit.marketplace.test.types.Solution;
 public class SimulatedAnnealingOptimizer extends Optimizer {
 
 	private static double MIN_TEMPERATURE = 1;
-	private static int NO_OF_ITERATIONS = 10000;
+	private static int NO_OF_ITERATIONS = 100;
 	private static double INITIAL_TEMPERATURE= 1000;
 	
 	private List<Solution> omega;
@@ -31,7 +31,6 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 		fillRandomSolution();
 		printOmega();
 		while(temperature > MIN_TEMPERATURE){
-			System.out.println("Temperature : " + temperature);
 			iterate();
 		}
 		printOmega();
@@ -220,7 +219,7 @@ public class SimulatedAnnealingOptimizer extends Optimizer {
 	}
 	
 	private void updateTemperature(){
-		temperature = (float) (temperature * 0.95);
+		temperature = (float) (temperature * 0.8);
 	}
 	
 	private Solution uniselect(){		

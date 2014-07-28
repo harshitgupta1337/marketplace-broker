@@ -42,10 +42,13 @@ public class AppContextListener implements ServletContextListener {
     	int port = Integer.parseInt(mongoProvider.get("port").toString());
     	String awsAccessKeyId = mongoProvider.get("awsAccessKeyId").toString();
     	String secretAccessKey = mongoProvider.get("secretAccessKey").toString();
-    	
-    	AbstractProvider eucaProvider = new EucalyptusProvider(providerId, name, url, port, awsAccessKeyId, secretAccessKey);
-    	ProviderRegistry.getInstance().getProviders().add(eucaProvider);
-    	System.out.println("Added provider "+name);
+    	try{
+    		AbstractProvider eucaProvider = new EucalyptusProvider(providerId, name, url, port, awsAccessKeyId, secretAccessKey);
+    		ProviderRegistry.getInstance().getProviders().add(eucaProvider);
+    		System.out.println("Added provider "+name);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
  
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

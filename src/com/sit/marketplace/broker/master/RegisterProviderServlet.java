@@ -33,9 +33,11 @@ public class RegisterProviderServlet extends HttpServlet{
 		String secretAccessKey = request.getParameter("secretAccessKey");
 		String name = request.getParameter("name");
 		
-		AbstractProvider provider = new EucalyptusProvider(UUID.randomUUID().toString(), name, clcHost, clcPort, awsAccessKeyId, secretAccessKey);
-		
+		// TODO
+		//CALL THE PROVIDER'S WEBSERVICE AND GET THE PARAMETERS
 		try{
+			AbstractProvider provider = new EucalyptusProvider(UUID.randomUUID().toString(), name, clcHost, clcPort, awsAccessKeyId, secretAccessKey);
+			
 			MongoClient client = new MongoClient(Utils.MONGODB_HOST, 27017);
 			DB database = client.getDB(Utils.MONGODB_DB);
 			DBCollection providers= database.getCollection(Utils.MONGODB_PROVIDERS_COLLECTION);
@@ -43,6 +45,7 @@ public class RegisterProviderServlet extends HttpServlet{
 			providers.insert(new BasicDBObject("providerId", provider.getProviderId()).append("url", clcHost).append("port", clcPort)
 					.append("awsAccessKeyId", awsAccessKeyId).append("secretAccessKey", secretAccessKey).append("name", name)
 					.append("cloudType", "EUCALYPTUS"));
+			
 			ProviderRegistry.getInstance().getProviders().add(provider);
 		}
 		catch(Exception e){

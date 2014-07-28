@@ -40,6 +40,22 @@
     <servlet-name>RegisterEucalyptusProvider</servlet-name>
     <url-pattern>/registerEucalyptusProvider</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>VmsRequested</servlet-name>
+    <servlet-class>com.sit.marketplace.broker.vmallocation.FindVmAllocationSolution</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VmsRequested</servlet-name>
+    <url-pattern>/vmsRequested</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>LaunchInstances</servlet-name>
+    <servlet-class>com.sit.marketplace.broker.vmallocation.LaunchInstances</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LaunchInstances</servlet-name>
+    <url-pattern>/launchInstances</url-pattern>
+  </servlet-mapping>
   <listener>
     <listener-class>com.sit.marketplace.broker.utils.AppContextListener</listener-class>
   </listener>

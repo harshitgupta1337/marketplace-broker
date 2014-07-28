@@ -21,9 +21,8 @@ import com.sit.marketplace.broker.utils.Utils.CloudType;
 public abstract class AbstractProvider {
 
 	private static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-
 	private final static String USER_AGENT = "Mozilla/5.0";
-	
+
 	protected String name;
 	protected String providerId;
 	protected String url;
@@ -37,7 +36,6 @@ public abstract class AbstractProvider {
 		this.port = port;
 		this.cloudType = cloudType;
 	}
-	
 	public void setName(String name){
 		this.name = name;
 	}
